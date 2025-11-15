@@ -13,7 +13,7 @@ inference:
   img_size: 1024
   conf_threshold:
     signature: 0.35
-    stamp: 0.45
+    stamp: 0.20
     qr: 0.25
   iou_nms:
     signature: 0.5

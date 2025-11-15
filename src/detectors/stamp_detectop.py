@@ -9,7 +9,7 @@ class StampDetector:
         self.conf = conf_threshold
         self.iou = iou_threshold
 
-        # автоматически ищем ID класса по имени
+      
         names = {int(k): v for k, v in self.model.names.items()}
         self.stamp_id = None
         for idx, name in names.items():
