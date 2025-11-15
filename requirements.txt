@@ -1,0 +1,12 @@
+ultralytics==8.3.0
+numpy
+opencv-python
+pillow
+pymupdf          # для PDF → картинки (fitz)
+pyyaml
+torch
+
+fastapi
+uvicorn
+
+tqdm

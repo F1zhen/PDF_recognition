@@ -1,0 +1,27 @@
+paths:
+  input_pdfs: "data/input_pdfs"
+  input_images: "data/input_images"
+  page_images: "data/page_images"
+  output_json: "data/outputs/json"
+  output_viz: "data/outputs/viz"
+  models:
+    signature: "models/signature/yolov8s.pt"
+    stamp: "models/stamp/weights.pt"
+    qr: "models/qr/YOLOV8s_Barcode_Detection.pt"
+
+inference:
+  img_size: 1024
+  conf_threshold:
+    signature: 0.35
+    stamp: 0.35
+    qr: 0.25
+  iou_nms:
+    signature: 0.5
+    stamp: 0.5
+    qr: 0.3
+  stamp_with_signature_iou: 0.3
+
+classes_to_labels:   # если нужно маппить на label_XX
+  signature: "signature"
+  stamp: "stamp"
+  qr: "qr"
