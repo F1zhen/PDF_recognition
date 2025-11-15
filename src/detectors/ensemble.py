@@ -2,7 +2,7 @@ from typing import List, Dict
 import numpy as np
 
 from .signature_detector import SignatureDetector
-# from .stamp_detectop import StampDetector
+from .stamp_detectop import StampDetector
 from .qr_detector import QrDetector
 
 
@@ -60,12 +60,14 @@ class EnsembleDetector:
             conf_threshold=inf_cfg["conf_threshold"]["signature"],
             iou_threshold=inf_cfg["iou_nms"]["signature"],
         )
-        # self.stamp = StampDetector(
-        #     paths["stamp"],
-        #     img_size=inf_cfg["img_size"],
-        #     conf_threshold=inf_cfg["conf_threshold"]["stamp"],
-        #     iou_threshold=inf_cfg["iou_nms"]["stamp"],
-        # )
+
+        self.stamp = StampDetector(
+            paths["stamp"],
+            img_size=inf_cfg["img_size"],
+            conf_threshold=inf_cfg["conf_threshold"]["stamp"],
+            iou_threshold=inf_cfg["iou_nms"]["stamp"],
+        )
+
         self.qr = QrDetector(
             paths["qr"],
             img_size=inf_cfg["img_size"],
@@ -78,21 +80,20 @@ class EnsembleDetector:
 
     def detect_on_image(self, image_path: str) -> List[Dict]:
         sigs = self.signature.predict(image_path)
-        # stamps = self.stamp.predict(image_path)
+        stamps = self.stamp.predict(image_path)
         qrs = self.qr.predict(image_path)
 
         # NMS по классам
         sigs = nms_per_class(sigs, self.iou_nms["signature"])
-        # stamps = nms_per_class(stamps, self.iou_nms["stamp"])
+        stamps = nms_per_class(stamps, self.iou_nms["stamp"])
         qrs = nms_per_class(qrs, self.iou_nms["qr"])
 
-        all_dets = sigs + qrs
+        all_dets = sigs + stamps + qrs
         all_dets = self._add_stamp_with_signature_flag(all_dets)
 
         return all_dets
 
     def _add_stamp_with_signature_flag(self, dets: List[Dict]) -> List[Dict]:
-        # сейчас печатей нет, но код оставляем на будущее
         stamps = [d for d in dets if d["category"] == "stamp"]
         sigs = [d for d in dets if d["category"] == "signature"]
 
