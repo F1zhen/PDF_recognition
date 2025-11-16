@@ -15,12 +15,6 @@ class SignatureDetector:
         self.iou_threshold = iou_threshold
 
     def predict(self, image_path: str) -> List[Dict]:
-        """
-        Возвращает список:
-        [
-          {"category": "signature", "bbox": [x, y, w, h], "score": float}, ...
-        ]
-        """
         results = self.model.predict(
             source=image_path,
             imgsz=self.img_size,

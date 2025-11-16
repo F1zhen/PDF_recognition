@@ -15,7 +15,7 @@ inference:
 
   conf_threshold:
     signature_global: 0.4   # подписи на всей странице
-    signature_in_stamp: 0.4   # подписи внутри печатей
+    signature_in_stamp: 0.1   # подписи внутри печатей
     stamp: 0.75
     qr: 0.25
 
