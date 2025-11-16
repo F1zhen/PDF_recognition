@@ -5,7 +5,7 @@ import yaml
 
 from utils.pds_utils import pdf_to_images
 from utils.viz_utils import draw_boxes
-from utils.json_utlis import save_results_json
+from utils.json_utils import save_results_json
 from src.detectors.ensemble import EnsembleDetector
 
 
