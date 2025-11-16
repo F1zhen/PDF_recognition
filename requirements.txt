@@ -8,5 +8,5 @@ torch
 Pillow
 fastapi
 uvicorn
-
+python-multipart
 tqdm
