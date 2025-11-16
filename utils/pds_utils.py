@@ -16,7 +16,7 @@ def pdf_to_images(pdf_path: str, output_dir: str) -> Dict[int, Dict]:
 
     for page_idx in tqdm(range(len(doc)), desc=f"PDF→IMG {pdf_path.name}"):
         page = doc[page_idx]
-        pix = page.get_pixmap(dpi=200)  
+        pix = page.get_pixmap(dpi=72)  
         page_num = page_idx + 1
 
         img_name = f"{pdf_path.stem}_page_{page_num:04d}.png"

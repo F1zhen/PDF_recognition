@@ -5,7 +5,7 @@ pillow
 pymupdf          # для PDF → картинки (fitz)
 pyyaml
 torch
-
+Pillow
 fastapi
 uvicorn
 

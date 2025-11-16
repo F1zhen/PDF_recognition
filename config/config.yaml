@@ -10,16 +10,21 @@ paths:
     qr: "models/qr/YOLOV8s_Barcode_Detection.pt"
 
 inference:
-  img_size: 1024
+  img_size: 1024          # для общей детекции
+  img_size_stamp: 512     # для crop-детектора подписи (можешь 384/256 попробовать)
+
   conf_threshold:
-    signature: 0.35
+    signature_global: 0.4   # подписи на всей странице
+    signature_in_stamp: 0.4   # подписи внутри печатей
     stamp: 0.75
     qr: 0.25
+
   iou_nms:
     signature: 0.5
     stamp: 0.5
-    qr: 0.3
-  stamp_with_signature_iou: 0.3
+    qr: 0.5
+
+  stamp_with_signature_iou: 0.2
 
 classes_to_labels:   # если нужно маппить на label_XX
   signature: "signature"

@@ -1,45 +1,35 @@
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 
 def build_results_dict(all_docs_predictions: Dict) -> Dict:
-    """
-    all_docs_predictions:
-    {
-      "file.pdf": {
-        page_num(int): {
-          "size": (width, height),
-          "detections": [
-            {
-              "category": "signature"/"stamp"/"qr",
-              "bbox": [x, y, w, h],
-              "score": 0.87,
-              # опционально: "stamp_with_signature": True
-            }, ...
-          ]
-        }, ...
-      }, ...
-    }
-    """
     result = {}
-
     for doc_name, pages in all_docs_predictions.items():
         doc_entry = {}
-        annotation_counter = 1
+        annotation_counter = 1   # счётчик как в примере selected_annotations
 
         for page_num, page_info in pages.items():
             width, height = page_info["size"]
             detections = page_info["detections"]
 
+            # 🔴 ВАЖНО: если на странице нет детекций — вообще не добавляем этот page_X
+            if not detections:
+                continue
+
             page_key = f"page_{page_num}"
+
             page_entry = {
-                "page_size": {"width": width, "height": height},
                 "annotations": [],
+                "page_size": {
+                    "width": int(width),
+                    "height": int(height),
+                },
             }
 
             for det in detections:
                 x, y, w, h = det["bbox"]
+
                 area = float(w) * float(h)
 
                 ann_key = f"annotation_{annotation_counter}"
@@ -56,17 +46,16 @@ def build_results_dict(all_docs_predictions: Dict) -> Dict:
                     "area": area,
                 }
 
-                # если какие-то флаги/score нужны
-                if "score" in det:
-                    ann_data["score"] = float(det["score"])
-                if det.get("stamp_with_signature"):
-                    ann_data["stamp_with_signature"] = True
-
+                # score, stamp_with_signature — не добавляем
                 page_entry["annotations"].append({ann_key: ann_data})
 
-            doc_entry[page_key] = page_entry
+            # Добавляем страницу только если есть аннотации (на всякий случай)
+            if page_entry["annotations"]:
+                doc_entry[page_key] = page_entry
 
-        result[doc_name] = doc_entry
+        # Если у документа нет ни одной страницы с аннотациями — не включаем его
+        if doc_entry:
+            result[doc_name] = doc_entry
 
     return result
 
