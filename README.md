@@ -166,7 +166,7 @@ pip install -r requirements.txt
 
 Запустить Uvicorn на порту 8089:
 
-uvicorn main:app --host 0.0.0.0 --port 8089
+uvicorn app:app --host 0.0.0.0 --port 8089
 
 
 После этого backend будет доступен по адресу, например:
@@ -261,3 +261,4 @@ tqdm
 @x_ae_yedil — Back-End
 
 @batyr_sk — Front-End
+
